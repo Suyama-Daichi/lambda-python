@@ -49,7 +49,8 @@ def validateRequest(request_body):
     リクエストのボディの検証
     """
     invalid_propaties = []
-
+    if not (request_body['gender'] == 0 or request_body['gender'] == 1):
+        invalid_propaties.append('gender')
     if request_body['age'] < 18 or request_body['age'] > 71:
         invalid_propaties.append('age')
     if request_body['bmi'] < 10.0 or request_body['bmi'] > 100.0:
