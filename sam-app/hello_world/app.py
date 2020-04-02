@@ -25,6 +25,14 @@ def lambda_handler(event, context):
 
     #     raise e
 
+    if len(validate_result) > 0:
+        return {
+            "statusCode": 400,
+            "body": json.dumps({
+                "invalidParam": ','.join(validate_result)
+            })
+        }
+
     return {
         "statusCode": 200,
         "body": json.dumps({
@@ -64,6 +72,6 @@ def validateRequest(request_body):
         invalid_propaties.append('us')
     if request_body['up'] < 1 or request_body['up'] > 5:
         invalid_propaties.append('up')
-    if request_body['smoking'] == 0 or request_body['smoking'] == 1:
+    if not (request_body['smoking'] == 0 or request_body['smoking'] == 1):
         invalid_propaties.append('smoking')
     return invalid_propaties
