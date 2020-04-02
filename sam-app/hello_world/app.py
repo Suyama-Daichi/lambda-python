@@ -12,9 +12,10 @@ def lambda_handler(event, context):
         'rid': {'N': "0"}
     })['Item']
 
-    iko_response = requests.get(IKO_API_ENDPOINT)
+    # iko_response = requests.get(IKO_API_ENDPOINT)
+    validate_result = validateRequest(event)
 
-    print(iko_response.json())
+    print(validate_result)
 
     # try:
     # ip = requests.get("http://checkip.amazonaws.com/")
@@ -33,3 +34,36 @@ def lambda_handler(event, context):
             "mmsecm": "認知症コメント"
         }),
     }
+
+
+def validateRequest(request_body):
+    """
+    リクエストのボディの検証
+    """
+    invalid_propaties = []
+
+    if request_body['age'] < 18 or request_body['age'] > 71:
+        invalid_propaties.append('age')
+    if request_body['bmi'] < 10.0 or request_body['bmi'] > 100.0:
+        invalid_propaties.append('bmi')
+    if request_body['sbp'] < 60 or request_body['sbp'] > 300:
+        invalid_propaties.append('sbp')
+    if request_body['dbp'] < 30 or request_body['dbp'] > 150:
+        invalid_propaties.append('dbp')
+    if request_body['tg'] < 10 or request_body['tg'] > 2000:
+        invalid_propaties.append('tg')
+    if request_body['gpt'] < 0 or request_body['gpt'] > 1000:
+        invalid_propaties.append('gpt')
+    if request_body['gt'] < 0 or request_body['gt'] > 1000:
+        invalid_propaties.append('gt')
+    if request_body['fbs'] < 20 or request_body['fbs'] > 600:
+        invalid_propaties.append('fbs')
+    if request_body['hba1c'] < 3.0 or request_body['hba1c'] > 20.0:
+        invalid_propaties.append('hba1c')
+    if request_body['us'] < 1 or request_body['us'] > 5:
+        invalid_propaties.append('us')
+    if request_body['up'] < 1 or request_body['up'] > 5:
+        invalid_propaties.append('up')
+    if request_body['smoking'] == 0 or request_body['smoking'] == 1:
+        invalid_propaties.append('smoking')
+    return invalid_propaties
